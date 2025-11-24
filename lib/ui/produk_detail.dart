@@ -1,86 +1,114 @@
 import 'package:flutter/material.dart';
-import '../model/produk.dart';
-import '../api/api_service.dart';
-import 'produk_form.dart';
+import 'package:tokokita/bloc/produk_bloc.dart';
+import 'package:tokokita/model/produk.dart';
+import 'package:tokokita/ui/produk_form.dart';
+import 'package:tokokita/ui/produk_page.dart';
 
-class ProdukDetail extends StatelessWidget {
-  final Produk produk;
-  final Function() refresh;
+class ProdukDetail extends StatefulWidget {
+  final Produk? produk;
 
-  const ProdukDetail({super.key, required this.produk, required this.refresh});
+  const ProdukDetail({Key? key, this.produk}) : super(key: key);
 
+  @override
+  _ProdukDetailState createState() => _ProdukDetailState();
+}
+
+class _ProdukDetailState extends State<ProdukDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Detail Produk")),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      appBar: AppBar(title: const Text('Detail Produk')),
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Kode : ${produk.kodeProduk}",
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              "Kode : ${widget.produk!.kodeProduk}",
+              style: const TextStyle(fontSize: 20.0),
             ),
-            Text("Nama Produk : ${produk.namaProduk}"),
-            Text("Harga : ${produk.hargaProduk}"),
-            const SizedBox(height: 30),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            ProdukForm(produk: produk, onSaved: refresh),
-                      ),
-                    );
-
-                    refresh();
-                    Navigator.pop(context);
-                  },
-                  child: const Text("EDIT"),
-                ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  onPressed: () async {
-                    final confirm = await showDialog<bool>(
-                      context: context,
-                      builder: (c) {
-                        return AlertDialog(
-                          title: const Text("Konfirmasi"),
-                          content: const Text("Yakin hapus data ini?"),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(c, false),
-                              child: const Text("Batal"),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(c, true),
-                              child: const Text("Hapus"),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-
-                    if (confirm == true) {
-                      await ApiService.deleteProduk(int.parse(produk.id!));
-                      refresh();
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text("HAPUS"),
-                ),
-              ],
+            Text(
+              "Nama : ${widget.produk!.namaProduk}",
+              style: const TextStyle(fontSize: 18.0),
             ),
+            Text(
+              "Harga : Rp. ${widget.produk!.hargaProduk.toString()}",
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            _tombolHapusEdit(),
           ],
         ),
       ),
     );
   }
 
-  // (tidak ada fungsi API di sini; gunakan ApiService untuk operasi jaringan)
+  Widget _tombolHapusEdit() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ElevatedButton(
+          child: const Text("EDIT"),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProdukForm(produk: widget.produk),
+              ),
+            );
+          },
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          child: const Text("DELETE"),
+          onPressed: () => confirmHapus(),
+        ),
+      ],
+    );
+  }
+
+  void confirmHapus() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text("Yakin ingin menghapus data ini?"),
+          actions: [
+            TextButton(
+              child: const Text("Batal"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            TextButton(
+              child: const Text("Ya"),
+              onPressed: () {
+                ProdukBloc.deleteProduk(id: widget.produk!.id).then(
+                  (value) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProdukPage(),
+                      ),
+                    );
+                  },
+                  onError: (error) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text("Gagal"),
+                        content: const Text("Hapus gagal, silahkan coba lagi"),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

@@ -6,11 +6,11 @@ class Consts {
   static const double avatarRadius = 66.0;
 }
 
-class WarningDialog extends StatelessWidget {
+class SuccessDialog extends StatelessWidget {
   final String? description;
   final VoidCallback? okClick;
 
-  const WarningDialog({Key? key, this.description, this.okClick})
+  const SuccessDialog({Key? key, this.description, this.okClick})
       : super(key: key);
 
   @override
@@ -49,9 +49,11 @@ class WarningDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            "GAGAL",
+            "SUKSES",
             style: TextStyle(
-                fontSize: 24.0, fontWeight: FontWeight.w700, color: Colors.red),
+                fontSize: 24.0,
+                fontWeight: FontWeight.w700,
+                color: Colors.green),
           ),
           const SizedBox(height: 16.0),
           Text(
@@ -64,9 +66,10 @@ class WarningDialog extends StatelessWidget {
           const SizedBox(height: 24.0),
           Align(
             alignment: Alignment.bottomRight,
-            child: ElevatedButton(
+            child: OutlinedButton(
               onPressed: () {
                 Navigator.of(context).pop(); // To close the dialog
+                okClick!();
               },
               child: const Text("OK"),
             ),
