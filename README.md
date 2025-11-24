@@ -5,7 +5,7 @@ Project TokoKita adalah aplikasi Flutter sederhana yang menerapkan fitur CRUD (C
 ## Fitur Utama nya yaitu
 
 
-## 🔐 Authentication
+🔐 Authentication
 
 Registrasi pengguna
 
@@ -13,7 +13,7 @@ Login pengguna
 
 Logout (menghapus token)
 
-## 🛒 Manajemen Produk
+🛒 Manajemen Produk
 
 Menampilkan daftar produk
 
@@ -25,7 +25,7 @@ Menghapus produk
 
 Menampilkan detail produk
 
-## ⚙️ Teknologi yang Digunakan
+⚙️ Teknologi yang Digunakan
 
 Flutter 3.x
 
@@ -38,7 +38,10 @@ SharedPreferences
 HTTP package
 
 
-# CARA MENJALANKAN 
-## 1. Pastikan Run Xampp dan apache dan mysql nya di run
+CARA MENJALANKAN 
+ 1. Pastikan Run Xampp dan apache dan mysql nya di run
+ 2. 
+
+
 
 
