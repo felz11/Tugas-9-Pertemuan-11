@@ -40,10 +40,7 @@ SharedPreferences
 
 HTTP package
 
-
-CARA MENJALANKAN 
- 1. Pastikan Run Xampp dan apache dan mysql nya di run
- 2. 
+# TIDAK BISAA ADD GAMBAR / VIDEO
 
 
 
