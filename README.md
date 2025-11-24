@@ -1,3 +1,6 @@
+NAMA: Salman Thufail
+NIM: H1D022109
+SHIFT: A
 # TokoKita – Flutter CRUD + REST API
 
 Project TokoKita adalah aplikasi Flutter sederhana yang menerapkan fitur CRUD (Create, Read, Update, Delete) menggunakan REST API Laravel. Aplikasi ini memiliki fitur login, registrasi, manajemen produk, serta penyimpanan token menggunakan SharedPreferences.
